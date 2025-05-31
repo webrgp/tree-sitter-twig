@@ -1,5 +1,5 @@
 ==================
-Identifier
+Variable
 ==================
 {{ user }}
 ---
@@ -184,10 +184,10 @@ Object property keys as names
   (output
     (object
       (pair
-        (variable)
+        (identifier)
         (string))
       (pair
-        (variable)
+        (identifier)
         (string)))))
 
 ==================
@@ -369,6 +369,19 @@ Subscript expression slice
       (slice))))
 
 ==================
+Subscript expression negative first arg
+==================
+{{ '123456'[-2:] }}
+---
+(template
+  (output
+    (subscript_expression
+      (string)
+      (slice
+        (unary_expression
+          (number))))))
+
+==================
 Subscript expression deeper
 ==================
 {{ user['name'][prop] }}
@@ -441,21 +454,7 @@ Call expression with one named argument
       (function)
       (arguments
         (named_argument
-          (string)
-          (string))))))
-
-==================
-Call expression with dots named argument
-==================
-{{ join(splitter: ',') }}
----
-(template
-  (output
-    (call_expression
-      (function)
-      (arguments
-        (named_argument
-          (string)
+          (variable)
           (string))))))
 
 ==================
@@ -469,19 +468,19 @@ Call expression with named arguments
       (function)
       (arguments
         (named_argument
-          (string)
+          (variable)
           (number))
         (named_argument
-          (string)
+          (variable)
           (number))
         (named_argument
-          (string)
+          (variable)
           (number))))))
 
 ==================
 Call expression with arguments and named arguments
 ==================
-{{ "now"|date('d/m/Y H:i', timezone="Europe/Paris") }}
+{{ "now"|date(format: 'd/m/Y H:i', timezone="Europe/Paris") }}
 ---
 (template
   (output
@@ -489,9 +488,11 @@ Call expression with arguments and named arguments
       (string)
       (function)
       (arguments
-        (string)
         (named_argument
-          (string)
+          (variable)
+          (string))
+        (named_argument
+          (variable)
           (string))))))
 
 ==================
@@ -551,6 +552,22 @@ Ternary operator short
     (ternary_expression
       (variable)
       (string))))
+
+==================
+Empty Coalesce
+==================
+{% set choice = thingOne ??? thingTwo ??? thingThree ??? thingFour %}
+---
+(template
+  (set
+    (variable)
+    (binary_expression
+      (variable)
+      (binary_expression
+        (variable)
+        (binary_expression
+          (variable)
+          (variable))))))
 
 ==================
 Filter without arguments

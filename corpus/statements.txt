@@ -43,6 +43,19 @@ Apply
       (content))))
 
 ==================
+Apply call expression
+==================
+{% apply niceComicSans('issue 51') %}
+{% endapply %}
+---
+(template
+  (apply
+    (call_expression
+      (function)
+      (arguments
+        (string)))))
+
+==================
 Apply multiple filters
 ==================
 {% apply lower|escape('html') %}
@@ -269,7 +282,7 @@ Flush
   (flush))
 
 ==================
-For
+for
 ==================
 {% for user in users %}
   {{ user.username }}
@@ -286,7 +299,22 @@ For
           (property))))))
 
 ==================
-For with sequence of numbers
+for element in |
+==================
+{% for user in %}
+  {{ user }}
+{% endfor %}
+---
+(template
+  (for
+    (variable)
+    (source_elements
+      (output
+        (variable)))))
+
+
+==================
+for with sequence of numbers
 ==================
 {% for i in 0..10 %}
   {{ i }}
@@ -303,7 +331,7 @@ For with sequence of numbers
         (variable)))))
 
 ==================
-For with else
+for with else
 ==================
 {% for user in users %}
   {{ user.username }}
@@ -324,7 +352,7 @@ For with else
       (content))))
 
 ==================
-For with kye, value
+for with key, value
 ==================
 {% for key, user in users %}
   <li>{{ key }}: {{ user.username|e }}</li>
@@ -382,7 +410,7 @@ From as operator
       (variable))))
 
 ==================
-If
+if
 ==================
 {% if online == false %}
   Our website is in maintenance mode
@@ -397,7 +425,7 @@ If
       (content))))
 
 ==================
-If else
+if else
 ==================
 {% if product.stock > 10 %}
    Available
@@ -418,7 +446,7 @@ If else
       (content))))
 
 ==================
-If elseif
+if elseif
 ==================
 {% if product.stock > 10 %}
    Available
@@ -450,7 +478,7 @@ If elseif
         (content)))))
 
 ==================
-If elseif else
+if elseif else
 ==================
 {% if product.stock > 10 %}
    Available
@@ -682,7 +710,7 @@ With variables
   (with
     (object
       (pair
-        (variable)
+        (identifier)
         (number)))
     (source_elements
       (content))))
@@ -698,7 +726,7 @@ With variables only
   (with
     (object
       (pair
-        (variable)
+        (identifier)
         (number)))
     (source_elements
       (content))))
@@ -719,3 +747,21 @@ Trans
       (tag)
       (content)
       (tag))))
+
+==================
+if empty condition (completion)
+==================
+{% if  %}{% endif %}
+---
+(template
+  (if))
+
+==================
+if empty condition (diagnostics)
+==================
+{% if %}<input>{% endif %}
+---
+(template
+  (if
+    (source_elements
+      (content))))

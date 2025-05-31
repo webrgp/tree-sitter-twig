@@ -30,15 +30,22 @@ Lorem { ipsum
   (content))
 
 ==================
-Comment single line
+Empty comment
 ==================
-{# сomment #}
+{# #}
+---
+(template (comment))
+
+==================
+comment single line
+==================
+{# comment #}
 ---
 (template
   (comment))
 
 ==================
-Comment multi line
+comment multi line
 ==================
 {# note: disabled template because we no longer use this
   {% for user in users %}
@@ -50,9 +57,9 @@ Comment multi line
   (comment))
 
 ==================
-Сontent сomment content
+Lorem {# comment #} ipsum
 ==================
-Lorem {# сomment #} ipsum
+Lorem {# comment #} ipsum
 ---
 (template
   (content)
@@ -60,20 +67,39 @@ Lorem {# сomment #} ipsum
   (content))
 
 ==================
-Comment content  Comment
+{# comment #} Lorem  {# comment #}
 ==================
-{# сomment #} Lorem  {# сomment #}
+{# comment #} Lorem  {# comment #}
 ---
 (template
   (comment)
   (content)
   (comment))
 
+===
+comment with hashes
+===
+{# # safsaf
+    # asfasf
+#}
+
 ==================
-Output directive
+output directive
 ==================
 {{ user }}
 ---
 (template
   (output
     (variable)))
+
+==================
+empty output
+==================
+{{}} {{ }} {{
+
+}}
+---
+(template
+  (output)
+  (output)
+  (output))
