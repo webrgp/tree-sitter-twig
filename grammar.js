@@ -506,6 +506,41 @@ module.exports = grammar({
         alias('endwith', 'keyword'),
       ),
 
+    guard: ($) =>
+      statement(
+        $,
+        alias('guard', 'keyword'),
+        field('type', choice('function', 'filter', 'test')),
+        field('name', $.identifier),
+        source_elements($),
+        optional(seq(alias('else', 'keyword'), source_elements($, 'else'))),
+        alias('endguard', 'keyword'),
+      ),
+
+    types: ($) =>
+      statement(
+        $,
+        alias('types', 'keyword'),
+        choice(
+          // Single type declaration: var: 'type'
+          $.type_declaration,
+          // Block type declarations: { var1: 'type1', var2?: 'type2' }
+          seq(
+            '{',
+            commaSep($.type_declaration),
+            '}',
+          ),
+        ),
+      ),
+
+    type_declaration: ($) =>
+      seq(
+        field('name', alias($.identifier, $.variable)),
+        optional('?'),
+        ':',
+        field('type', $.string),
+      ),
+
     _statement: ($) =>
       choice(
         $.tag,
@@ -520,6 +555,7 @@ module.exports = grammar({
         $.flush,
         $.for,
         $.from,
+        $.guard,
         $.if,
         $.import,
         $.include,
@@ -527,6 +563,7 @@ module.exports = grammar({
         $.sandbox,
         $.set,
         $.set_block,
+        $.types,
         $.use,
         $.verbatim,
         $.with,

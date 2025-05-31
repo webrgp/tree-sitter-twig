@@ -765,3 +765,129 @@ if empty condition (diagnostics)
   (if
     (source_elements
       (content))))
+
+==================
+Guard function
+==================
+{% guard function importmap %}
+  {{ importmap('app') }}
+{% endguard %}
+---
+(template
+  (guard
+    (function)
+    (source_elements
+      (output
+        (call_expression
+          (function)
+          (arguments
+            (string)))))))
+
+==================
+Guard function with else
+==================
+{% guard function importmap %}
+  {{ importmap('app') }}
+{% else %}
+  <!-- fallback code -->
+{% endguard %}
+---
+(template
+  (guard
+    (function)
+    (source_elements
+      (output
+        (call_expression
+          (function)
+          (arguments
+            (string)))))
+    (source_elements
+      (content))))
+
+==================
+Guard filter
+==================
+{% guard filter upper %}
+  {{ name|upper }}
+{% endguard %}
+---
+(template
+  (guard
+    (filter)
+    (source_elements
+      (output
+        (filter_expression
+          (variable)
+          (function))))))
+
+==================
+Guard test
+==================
+{% guard test defined %}
+  {% if variable is defined %}
+    {{ variable }}
+  {% endif %}
+{% endguard %}
+---
+(template
+  (guard
+    (test)
+    (source_elements
+      (if
+        (binary_expression
+          (variable)
+          (variable))
+        (source_elements
+          (output
+            (variable)))))))
+
+==================
+Types single declaration
+==================
+{% types name: 'string' %}
+---
+(template
+  (types
+    (type_declaration
+      (variable)
+      (string))))
+
+==================
+Types optional variable
+==================
+{% types name?: 'string' %}
+---
+(template
+  (types
+    (type_declaration
+      (variable)
+      (string))))
+
+==================
+Types block declaration
+==================
+{% types {
+    name: 'string',
+    age: 'int',
+    email?: 'string'
+} %}
+---
+(template
+  (types
+    (type_declaration
+      (variable)
+      (string))
+    (type_declaration
+      (variable)
+      (string))
+    (type_declaration
+      (variable)
+      (string))))
+
+==================
+Types empty block
+==================
+{% types {} %}
+---
+(template
+  (types))
